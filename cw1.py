@@ -3,7 +3,7 @@ import numpy as np
 #Example done in class using Rule of Mixture and HT Method
 #Data given:
 S3 = 0.2
-G12 = 1
+S12 = 1
 WFibre = 0.6 #Fibre weight Fraction
 #Carbon
 pFibre = 1870 #km/m^3
@@ -31,3 +31,9 @@ G12 = (GFibre*GMatrix)/(GFibre*VMatrix + GMatrix*VFibre)
 #minor Poition Ratio
 v12 = vFibre*VFibre + vMatrix*VMatrix
 
+#HT Method
+nE = ((EFibre/EMatrix)-1)/((EFibre/EMatrix) + S3)
+E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
+
+nG = ((GFibre/GMatrix) - 1)/((GFibre/GMatrix) + 1)
+G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
