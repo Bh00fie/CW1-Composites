@@ -67,8 +67,12 @@ T = np.array([[T11, T12, T13],
               [T21, T22, T23],
               [T31, T32, T33]])
 
-# Calculate the inverse of T matrix
+#Calculate the inverse of T matrix
 T_inv = np.linalg.inv(T)
 
-# Calculate the transpose of the inverse matrix
+#Calculate the transpose of the inverse matrix
 T_inv_transpose = np.transpose(T_inv)
+
+#Calculating Qbar Matrix
+Qbar = T_inv*Q*T_inv_transpose
+print(Qbar)
