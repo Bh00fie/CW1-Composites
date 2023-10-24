@@ -18,7 +18,16 @@ WMatrix = 1 - WFibre
 VFibre = (WFibre/pFibre)/((WFibre/pFibre)+(WMatrix/pMatrix))
 VMatrix = 1 - VFibre
 
+#Rule of mixture
+#Young Modulus
+E1 = EMatrix*VMatrix + EFibre*VFibre
+E2 = (EFibre*EMatrix)/(VFibre*EMatrix + VMatrix*EFibre)
 
+#Shear Modulus
+GFibre = EFibre/(2*(1+vFibre))
+GMatrix = EMatrix/(2*(1+vMatrix))
+G12 = (GFibre*GMatrix)/(GFibre*VMatrix + GMatrix*VFibre)
 
-
+#minor Poition Ratio
+v12 = vFibre*VFibre + vMatrix*VMatrix
 
