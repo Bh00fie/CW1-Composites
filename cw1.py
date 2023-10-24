@@ -21,14 +21,13 @@ VMatrix = 1 - VFibre
 #Rule of mixture
 #Young Modulus
 E1 = EMatrix*VMatrix + EFibre*VFibre
-E2 = (EFibre*EMatrix)/(VFibre*EMatrix + VMatrix*EFibre)
 
 #Shear Modulus
 GFibre = EFibre/(2*(1+vFibre))
 GMatrix = EMatrix/(2*(1+vMatrix))
 G12 = (GFibre*GMatrix)/(GFibre*VMatrix + GMatrix*VFibre)
 
-#minor Poition Ratio
+#Major Poisson Ratio
 v12 = vFibre*VFibre + vMatrix*VMatrix
 
 #HT Method
@@ -37,3 +36,6 @@ E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
 
 nG = ((GFibre/GMatrix) - 1)/((GFibre/GMatrix) + 1)
 G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
+
+#Minor Poisson Ration
+v21 = v12 *(E2/E1)
