@@ -67,4 +67,7 @@ T = np.array([[T11, T12, T13],
               [T21, T22, T23],
               [T31, T32, T33]])
 
-print(T)
+# Calculate the inverse of T matrix
+T_inv = np.linalg.inv(T)
+
+print(T_inv)
