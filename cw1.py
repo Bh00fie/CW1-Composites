@@ -5,6 +5,9 @@ import numpy as np
 S3 = 0.2
 S12 = 1
 WFibre = 0.6 #Fibre weight Fraction
+angle = 90
+theta = angle*((np.pi)/180)
+
 #Carbon
 pFibre = 1870 #km/m^3
 EFibre = 310 #GN/m^2
@@ -49,5 +52,19 @@ Q = np.array([[Q11, Q12, 0],
               [Q12, Q22, 0],
               [0, 0, Q66]])
 
-print(Q)
+# Calculating Tmatrix
+T11 = np.cos(theta) ** 2
+T12 = np.sin(theta) ** 2
+T13 = 2 * np.sin(theta) * np.cos(theta)
+T21 = np.sin(theta) ** 2
+T22 = np.cos(theta) ** 2
+T23 = -2 * np.sin(theta) * np.cos(theta)
+T31 = -np.sin(theta) * np.cos(theta)
+T32 = np.sin(theta) * np.cos(theta)
+T33 = np.cos(theta) ** 2 - np.sin(theta) ** 2
 
+T = np.array([[T11, T12, T13],
+              [T21, T22, T23],
+              [T31, T32, T33]])
+
+print(T)
