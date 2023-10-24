@@ -70,4 +70,5 @@ T = np.array([[T11, T12, T13],
 # Calculate the inverse of T matrix
 T_inv = np.linalg.inv(T)
 
-print(T_inv)
+# Calculate the transpose of the inverse matrix
+T_inv_transpose = np.transpose(T_inv)
