@@ -39,3 +39,15 @@ G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
 
 #Minor Poisson Ration
 v21 = v12 *(E2/E1)
+
+#Calculating Qmatrix
+Q11 = E1 / (1 - v12 * v21)
+Q22 = E2 / (1 - v12 * v21)
+Q12 = v12 * E2 / (1 - v12 * v21)
+Q66 = G12
+Q = np.array([[Q11, Q12, 0],
+              [Q12, Q22, 0],
+              [0, 0, Q66]])
+
+print(Q)
+
