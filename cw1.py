@@ -5,7 +5,7 @@ import numpy as np
 S3 = 0.2
 S12 = 1
 WFibre = 0.6 #Fibre weight Fraction
-angle = 90
+angle = 0
 theta = angle*((np.pi)/180)
 
 #Carbon
@@ -75,4 +75,6 @@ T_inv_transpose = np.transpose(T_inv)
 
 #Calculating Qbar Matrix
 Qbar = T_inv @ Q @ T_inv_transpose
+
+print(Q)
 print(Qbar)
