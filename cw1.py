@@ -74,5 +74,5 @@ T_inv = np.linalg.inv(T)
 T_inv_transpose = np.transpose(T_inv)
 
 #Calculating Qbar Matrix
-Qbar = T_inv*Q*T_inv_transpose
+Qbar = T_inv @ Q @ T_inv_transpose
 print(Qbar)
