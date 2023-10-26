@@ -7,6 +7,7 @@ S12 = 1
 WFibre = 0.6 #Fibre weight Fraction
 angle = 0
 theta = angle*((np.pi)/180)
+thickness = 1 #mm For each layer
 
 #Carbon
 pFibre = 1870 #km/m^3
@@ -24,24 +25,38 @@ VMatrix = 1 - VFibre
 #Rule of mixture
 #Young Modulus
 E1 = EMatrix*VMatrix + EFibre*VFibre
+E2 = (EFibre*EMatrix)/((VFibre*EMatrix)+(VMatrix*EFibre))
 
 #Shear Modulus
 GFibre = EFibre/(2*(1+vFibre))
 GMatrix = EMatrix/(2*(1+vMatrix))
-G12 = (GFibre*GMatrix)/(GFibre*VMatrix + GMatrix*VFibre)
+# print(EMatrix, vMatrix)
+G12 = (GFibre*GMatrix)/((GFibre*VMatrix) + (GMatrix*VFibre))
+# print(GMatrix, GFibre, VMatrix, VFibre)
 
 #Major Poisson Ratio
 v12 = vFibre*VFibre + vMatrix*VMatrix
 
 #HT Method
 nE = ((EFibre/EMatrix)-1)/((EFibre/EMatrix) + S3)
-E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
+# E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
 
 nG = ((GFibre/GMatrix) - 1)/((GFibre/GMatrix) + 1)
-G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
+# G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
 
 #Minor Poisson Ration
 v21 = v12 *(E2/E1)
+# print(E1, E2, v12, v21, G12)
+
+#Calculating SMatrix
+S11 = 1/E1
+S12 = v12/E1
+S22 = 1/E2
+S66 = 1/G12
+S = np.array([[S11, S12, 0],
+              [S12, S22, 0],
+              [0, 0, S66]])
+# print(S)
 
 #Calculating Qmatrix
 Q11 = E1 / (1 - v12 * v21)
@@ -76,5 +91,4 @@ T_inv_transpose = np.transpose(T_inv)
 #Calculating Qbar Matrix
 Qbar = T_inv @ Q @ T_inv_transpose
 
-print(Q)
-print(Qbar)
+print(Qbar, Q)
