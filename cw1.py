@@ -5,94 +5,112 @@ import numpy as np
 S3 = 0.2
 S12 = 1
 WFibre = 0.6 #Fibre weight Fraction
-angle = 0
-theta = angle*((np.pi)/180)
 thickness = 1 #mm For each layer
+
 # Laminate Configuration for Question 1
 laminate_config_q1 = [0, 90, 90, 0]
 
-#Carbon
-pFibre = 1870 #km/m^3
-EFibre = 310 #GN/m^2
-vFibre = 0.23
-#Epoxy
-pMatrix = 1200 #km/m^3
-EMatrix = 2.4 #GN/m^2
-vMatrix = 0.33
+# Created an empty list to store Qbar matrices for each angle
+Qbar_list = []
 
-WMatrix = 1 - WFibre
-VFibre = (WFibre/pFibre)/((WFibre/pFibre)+(WMatrix/pMatrix))
-VMatrix = 1 - VFibre
+# Iterating through the angles in the laminate_config_q1 array
+for angle in laminate_config_q1:
+    theta = angle * (np.pi / 180)  # Calculate theta based on the angle
+    
+    #Carbon
+    pFibre = 1870 #km/m^3
+    EFibre = 310 #GN/m^2
+    vFibre = 0.23
+    #Epoxy
+    pMatrix = 1200 #km/m^3
+    EMatrix = 2.4 #GN/m^2
+    vMatrix = 0.33
 
-#Rule of mixture
-#Young Modulus
-E1 = EMatrix*VMatrix + EFibre*VFibre
-E2 = (EFibre*EMatrix)/((VFibre*EMatrix)+(VMatrix*EFibre))
+    WMatrix = 1 - WFibre
+    VFibre = (WFibre/pFibre)/((WFibre/pFibre)+(WMatrix/pMatrix))
+    VMatrix = 1 - VFibre
 
-#Shear Modulus
-GFibre = EFibre/(2*(1+vFibre))
-GMatrix = EMatrix/(2*(1+vMatrix))
-# print(EMatrix, vMatrix)
-G12 = (GFibre*GMatrix)/((GFibre*VMatrix) + (GMatrix*VFibre))
-# print(GMatrix, GFibre, VMatrix, VFibre)
+    #Rule of mixture
+    #Young Modulus
+    E1 = EMatrix*VMatrix + EFibre*VFibre
+    # E2 = (EFibre*EMatrix)/((VFibre*EMatrix)+(VMatrix*EFibre))
 
-#Major Poisson Ratio
-v12 = vFibre*VFibre + vMatrix*VMatrix
+    #Shear Modulus
+    GFibre = EFibre/(2*(1+vFibre))
+    GMatrix = EMatrix/(2*(1+vMatrix))
+    # print(EMatrix, vMatrix)
+    # G12 = (GFibre*GMatrix)/((GFibre*VMatrix) + (GMatrix*VFibre))
+    # print(GMatrix, GFibre, VMatrix, VFibre)
 
-#HT Method
-nE = ((EFibre/EMatrix)-1)/((EFibre/EMatrix) + S3)
-# E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
+    #Major Poisson Ratio
+    v12 = vFibre*VFibre + vMatrix*VMatrix
 
-nG = ((GFibre/GMatrix) - 1)/((GFibre/GMatrix) + 1)
-# G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
+    #HT Method
+    nE = ((EFibre/EMatrix)-1)/((EFibre/EMatrix) + S3)
+    E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
 
-#Minor Poisson Ration
-v21 = v12 *(E2/E1)
-# print(E1, E2, v12, v21, G12)
+    nG = ((GFibre/GMatrix) - 1)/((GFibre/GMatrix) + 1)
+    G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
 
-#Calculating SMatrix
-S11 = 1/E1
-S12 = v12/E1
-S22 = 1/E2
-S66 = 1/G12
-S = np.array([[S11, S12, 0],
-              [S12, S22, 0],
-              [0, 0, S66]])
-# print(S)
+    #Minor Poisson Ration
+    v21 = v12 *(E2/E1)
+    # print(E1, E2, v12, v21, G12)
 
-#Calculating Qmatrix
-Q11 = E1 / (1 - v12 * v21)
-Q22 = E2 / (1 - v12 * v21)
-Q12 = v12 * E2 / (1 - v12 * v21)
-Q66 = G12
-Q = np.array([[Q11, Q12, 0],
-              [Q12, Q22, 0],
-              [0, 0, Q66]])
+    #Calculating SMatrix
+    S11 = 1/E1
+    S12 = v12/E1
+    S22 = 1/E2
+    S66 = 1/G12
+    S = np.array([[S11, S12, 0],
+                [S12, S22, 0],
+                [0, 0, S66]])
+    # print(S)
 
-# Calculating Tmatrix
-T11 = np.cos(theta) ** 2
-T12 = np.sin(theta) ** 2
-T13 = 2 * np.sin(theta) * np.cos(theta)
-T21 = np.sin(theta) ** 2
-T22 = np.cos(theta) ** 2
-T23 = -2 * np.sin(theta) * np.cos(theta)
-T31 = -np.sin(theta) * np.cos(theta)
-T32 = np.sin(theta) * np.cos(theta)
-T33 = np.cos(theta) ** 2 - np.sin(theta) ** 2
+    #Calculating Qmatrix
+    Q11 = E1 / (1 - v12 * v21)
+    Q22 = E2 / (1 - v12 * v21)
+    Q12 = v12 * E2 / (1 - v12 * v21)
+    Q66 = G12
+    Q = np.array([[Q11, Q12, 0],
+                [Q12, Q22, 0],
+                [0, 0, Q66]])
 
-T = np.array([[T11, T12, T13],
-              [T21, T22, T23],
-              [T31, T32, T33]])
+    # Calculating Tmatrix
+    T11 = np.cos(theta) ** 2
+    T12 = np.sin(theta) ** 2
+    T13 = 2 * np.sin(theta) * np.cos(theta)
+    T21 = np.sin(theta) ** 2
+    T22 = np.cos(theta) ** 2
+    T23 = -2 * np.sin(theta) * np.cos(theta)
+    T31 = -np.sin(theta) * np.cos(theta)
+    T32 = np.sin(theta) * np.cos(theta)
+    T33 = np.cos(theta) ** 2 - np.sin(theta) ** 2
 
-#Calculate the inverse of T matrix
-T_inv = np.linalg.inv(T)
+    T = np.array([[T11, T12, T13],
+                [T21, T22, T23],
+                [T31, T32, T33]])
 
-#Calculate the transpose of the inverse matrix
-T_inv_transpose = np.transpose(T_inv)
+    #Calculate the inverse of T matrix
+    T_inv = np.linalg.inv(T)
 
-#Calculating Qbar Matrix
-Qbar = T_inv @ Q @ T_inv_transpose
+    #Calculate the transpose of the inverse matrix
+    T_inv_transpose = np.transpose(T_inv)
 
-print(Qbar, Q)
+    #Calculating Qbar Matrix
+    Qbar = T_inv @ Q @ T_inv_transpose
 
-#A Matrix
+    Qbar = np.round(Qbar, 4)
+    Q = np.round(Q, 4)
+
+    # Converting the NumPy array to a regular Python list
+    Qbar_list.append(Qbar.tolist())
+    #A Matrix
+    
+# Print the Qbar matrices in a human-readable format
+for i, Qbar_matrix in enumerate(Qbar_list):
+    print(f"Qbar for angle {laminate_config_q1[i]} degrees:")
+    for row in Qbar_matrix:
+        print(row)
+    print()
+    
+print(Qbar_list[1])
