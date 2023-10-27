@@ -5,10 +5,11 @@ import numpy as np
 S3 = 0.2
 S12 = 1
 WFibre = 0.6 #Fibre weight Fraction
-thickness = 1 #mm For each layer
+thickness = 0.001 #mm For each layer
 
 # Laminate Configuration for Question 1
 laminate_config_q1 = [0, 90, 90, 0]
+nLayers = len(laminate_config_q1)
 
 # Created an empty list to store Qbar matrices for each angle
 Qbar_list = []
@@ -56,6 +57,13 @@ for angle in laminate_config_q1:
     v21 = v12 *(E2/E1)
     # print(E1, E2, v12, v21, G12)
 
+    # Checking values with example done in L10
+    E1 = 39
+    E2 = 8.6
+    v12 = 0.28
+    v21 = 0.06
+    G12 = 3.8
+    
     #Calculating SMatrix
     S11 = 1/E1
     S12 = v12/E1
@@ -104,7 +112,9 @@ for angle in laminate_config_q1:
 
     # Converting the NumPy array to a regular Python list
     Qbar_list.append(Qbar.tolist())
+    
     #A Matrix
+    
     
 # Print the Qbar matrices in a human-readable format
 for i, Qbar_matrix in enumerate(Qbar_list):
@@ -113,4 +123,3 @@ for i, Qbar_matrix in enumerate(Qbar_list):
         print(row)
     print()
     
-print(Qbar_list[1])
