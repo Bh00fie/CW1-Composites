@@ -8,6 +8,8 @@ WFibre = 0.6 #Fibre weight Fraction
 angle = 0
 theta = angle*((np.pi)/180)
 thickness = 1 #mm For each layer
+# Laminate Configuration for Question 1
+laminate_config_q1 = [0, 90, 90, 0]
 
 #Carbon
 pFibre = 1870 #km/m^3
@@ -92,3 +94,5 @@ T_inv_transpose = np.transpose(T_inv)
 Qbar = T_inv @ Q @ T_inv_transpose
 
 print(Qbar, Q)
+
+#A Matrix
