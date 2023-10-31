@@ -146,9 +146,20 @@ A = np.sum(A1_list, axis=0)* 1e9
 B = np.sum(B1_list, axis=0)* 1e9
 D = np.sum(D1_list, axis=0)* 1e9
 
-print("A:")
-print(A)
-print("B:")
-print(B)
-print("D:")
-print(D)
+# print("A:")
+# print(A)
+# print("B:")
+# print(B)
+# print("D:")
+# print(D)
+
+# Concatenate the A, B, and D matrices in the specified order
+ABBD = np.block([[np.round(A, 4), np.round(B, 4)], [np.round(B,4), np.round(D, 4)]])
+
+# Set numpy print options to display numbers without scientific notation and with 4 decimal places
+np.set_printoptions(suppress=True, precision=4)
+
+# Print the resulting matrix
+print("ABBD Matrix:")
+print(ABBD)
+
