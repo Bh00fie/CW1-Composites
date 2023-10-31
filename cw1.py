@@ -14,6 +14,8 @@ nLayers = len(laminate_config_q1)
 # Created an empty list to store Qbar matrices for each angle
 Qbar_list = []
 A1_list = []
+B1_list = []
+D1_list = []
 
 # Iterating through the angles in the laminate_config_q1 array
 for angle in laminate_config_q1:
@@ -113,27 +115,38 @@ for angle in laminate_config_q1:
     # Converting the NumPy array to a regular Python list
     Qbar_list.append(Qbar.tolist())
     
-    # #A Matrix
+    # A Matrix
     A1 = Qbar * thickness
-    A1 = np.round(A1, 4)
-    
-    # Append the calculated A1 to the list
     A1_list.append(A1)
+
+    # B Matrix    
+    B1 = (1/2)*Qbar*
+    A1_list.append(B1)
     
-# Print the Qbar matrices in a human-readable format
-for i, Qbar_matrix in enumerate(Qbar_list):
-    print(f"Qbar for angle {laminate_config_q1[i]} degrees:")
-    for row in Qbar_matrix:
-        print(row)
-    print()
+    # D Matrix    
+    D1 = (1/3)*Qbar*
+    A1_list.append(D1)
     
-# Print the A1 matrices in a human-readable format
-for i, A1_matrix in enumerate(A1_list):
-    print(f"A1 for angle {laminate_config_q1[i]} degrees:")
-    print(A1_matrix)
-    print()
+# # Print the Qbar matrices in a human-readable format
+# for i, Qbar_matrix in enumerate(Qbar_list):
+#     print(f"Qbar for angle {laminate_config_q1[i]} degrees:")
+#     for row in Qbar_matrix:
+#         print(row)
+#     print()
+    
+# # Print the A1 matrices in a human-readable format
+# for i, A1_matrix in enumerate(A1_list):
+#     print(f"A1 for angle {laminate_config_q1[i]} degrees:")
+#     print(A1_matrix)
+#     print()
 
 A = np.sum(A1_list, axis=0)
+B = np.sum(B1_list, axis=0)
+D = np.sum(D1_list, axis=0)
 
 print("A:")
 print(A)
+print("B:")
+print(B)
+print("D:")
+print(D)
