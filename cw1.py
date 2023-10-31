@@ -10,6 +10,8 @@ thickness = 0.001 #mm For each layer
 # Laminate Configuration for Question 1
 laminate_config_q1 = [0, 90, 90, 0]
 nLayers = len(laminate_config_q1)
+# Calculating the bottom and top thickness
+position = [-nLayers * thickness / 2 + i * thickness for i in range(nLayers + 1)]
 
 # Created an empty list to store Qbar matrices for each angle
 Qbar_list = []
@@ -17,8 +19,8 @@ A1_list = []
 B1_list = []
 D1_list = []
 
-# Iterating through the angles in the laminate_config_q1 array
-for angle in laminate_config_q1:
+for i in range(nLayers):  # Use a loop to keep track of the current layer
+    angle = laminate_config_q1[i]
     theta = angle * (np.pi / 180)  # Calculate theta based on the angle
     
     #Carbon
@@ -109,25 +111,25 @@ for angle in laminate_config_q1:
 
     #Calculating Qbar Matrix
     Qbar = T_inv @ Q @ T_inv_transpose
-
-    Qbar = np.round(Qbar, 4)
+    # Qbar = np.round(Qbar, 4)
 
     # Converting the NumPy array to a regular Python list
     Qbar_list.append(Qbar.tolist())
-    
+
     # A Matrix
-    A1 = Qbar * thickness
+    A1 = Qbar * (position[i + 1] - position[i])
     A1_list.append(A1)
 
     # B Matrix    
-    B1 = (1/2)*Qbar*
-    A1_list.append(B1)
+    B1 = (1/2)*Qbar * ((position[i + 1]**2) - (position[i]**2))
+    B1_list.append(B1)
     
     # D Matrix    
-    D1 = (1/3)*Qbar*
-    A1_list.append(D1)
+    D1 = (1/3)*Qbar * ((position[i + 1]**3) - (position[i]**3))
+    D1_list.append(D1)
+
     
-# # Print the Qbar matrices in a human-readable format
+# Print the Qbar matrices in a human-readable format
 # for i, Qbar_matrix in enumerate(Qbar_list):
 #     print(f"Qbar for angle {laminate_config_q1[i]} degrees:")
 #     for row in Qbar_matrix:
@@ -140,9 +142,9 @@ for angle in laminate_config_q1:
 #     print(A1_matrix)
 #     print()
 
-A = np.sum(A1_list, axis=0)
-B = np.sum(B1_list, axis=0)
-D = np.sum(D1_list, axis=0)
+A = np.sum(A1_list, axis=0)* 1e9
+B = np.sum(B1_list, axis=0)* 1e9
+D = np.sum(D1_list, axis=0)* 1e9
 
 print("A:")
 print(A)
