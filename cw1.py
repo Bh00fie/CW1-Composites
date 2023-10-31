@@ -163,3 +163,8 @@ np.set_printoptions(suppress=True, precision=4)
 print("ABBD Matrix:")
 print(ABBD)
 
+ABBD_inv = np.linalg.inv(ABBD)
+
+# Print the resulting matrix
+print("ABBD_inv Matrix:")
+print(ABBD_inv)
