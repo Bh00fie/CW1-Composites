@@ -170,12 +170,12 @@ ABBD_inv = np.linalg.inv(ABBD)
 # print("ABBD_inv Matrix:")
 # print(ABBD_inv)
 
-Nx = 1
-Ny = 1
-Nxy = 1
-Mx = 1
-My = 1
-Mxy = 1
+Nx = 10
+Ny = 10
+Nxy = 10
+Mx = 10
+My = 10
+Mxy = 10
 
 NM = ([[Nx],[Ny],[Nxy],[Mx],[My],[Mxy]])
 # print(NM)
@@ -204,9 +204,12 @@ kxy = result[5]
 Sx = ((A[0,0]*ex + A[0,1]*ey + A[0,2]*yxy + B[0,0]*kx + B[0,1]*ky + B[0,2]*kxy))/(nLayers*thickness)
 Sy = ((A[1,0]*ex + A[1,1]*ey + A[1,2]*yxy + B[1,0]*kx + B[1,1]*ky + B[1,2]*kxy))/(nLayers*thickness)
 Sxy = ((A[2,0]*ex + A[2,1]*ey + A[2,2]*yxy + B[2,0]*kx + B[2,1]*ky + B[2,2]*kxy))/(nLayers*thickness)
+Sx = Nx/(nLayers*thickness)
+Sy = Ny/(nLayers*thickness)
+Sxy = Nxy/(nLayers*thickness)
 Ex = Sx/ex
 Ey = Sy/ey
-Ge = Sxy/yxy
+Gxy = Sxy/yxy
 print(Ex)
 print(Ey)
-print(Ge)
+print(Gxy)
