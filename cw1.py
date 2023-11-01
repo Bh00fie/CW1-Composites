@@ -154,17 +154,29 @@ D = np.sum(D1_list, axis=0)* 1e9
 # print(D)
 
 # Concatenate the A, B, and D matrices in the specified order
-ABBD = np.block([[np.round(A, 4), np.round(B, 4)], [np.round(B,4), np.round(D, 4)]])
+ABBD = np.block([[A, B], [B, D]])
 
-# Set numpy print options to display numbers without scientific notation and with 4 decimal places
-np.set_printoptions(suppress=True, precision=4)
+# Set numpy print options to display numbers without scientific notation
+np.set_printoptions(suppress=True, formatter={'float': lambda x: '0' if x == 0.0 else '{:0.3f}'.format(x)})
 
-# Print the resulting matrix
-print("ABBD Matrix:")
-print(ABBD)
+# # Print the ABBD matrix
+# print("ABBD Matrix:")
+# print(ABBD)
 
+# Inverse ABBD Matrix
 ABBD_inv = np.linalg.inv(ABBD)
 
-# Print the resulting matrix
-print("ABBD_inv Matrix:")
-print(ABBD_inv)
+# # Print the ABBD_inv matrix
+# print("ABBD_inv Matrix:")
+# print(ABBD_inv)
+
+Nx = 1
+Ny = 1
+Nxy = 1
+Mx = 1
+My = 1
+Mxy = 1
+
+NM = ([[Nx],[Ny],[Nxy],[Mx],[My],[Mxy]])
+# print(NM)
+
