@@ -194,3 +194,19 @@ kx = result[3]
 ky = result[4]
 kxy = result[5]
 
+# print(ex)
+# print(ey)
+# print(yxy)
+# print(kx)
+# print(ky)
+# print(kxy)
+
+Sx = ((A[0,0]*ex + A[0,1]*ey + A[0,2]*yxy + B[0,0]*kx + B[0,1]*ky + B[0,2]*kxy))/(nLayers*thickness)
+Sy = ((A[1,0]*ex + A[1,1]*ey + A[1,2]*yxy + B[1,0]*kx + B[1,1]*ky + B[1,2]*kxy))/(nLayers*thickness)
+Sxy = ((A[2,0]*ex + A[2,1]*ey + A[2,2]*yxy + B[2,0]*kx + B[2,1]*ky + B[2,2]*kxy))/(nLayers*thickness)
+Ex = Sx/ex
+Ey = Sy/ey
+Ge = Sxy/yxy
+print(Ex)
+print(Ey)
+print(Ge)
