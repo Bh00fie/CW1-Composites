@@ -180,3 +180,17 @@ Mxy = 1
 NM = ([[Nx],[Ny],[Nxy],[Mx],[My],[Mxy]])
 # print(NM)
 
+# Calculate the [ϵx, ϵy, γxy, κx, κy, κxy] vector
+result = np.dot(ABBD_inv, NM)
+
+# Print the result
+# print("Resulting [ex, ey, yxy, kx, ky, kxy] vector:")
+# print(result)
+
+ex = result[0]
+ey = result[1]
+yxy = result[2]
+kx = result[3]
+ky = result[4]
+kxy = result[5]
+
