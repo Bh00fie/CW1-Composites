@@ -35,50 +35,41 @@ for i in range(nLayers):  # Use a loop to keep track of the current layer
     WMatrix = 1 - WFibre
     VFibre = (WFibre/pFibre)/((WFibre/pFibre)+(WMatrix/pMatrix))
     VMatrix = 1 - VFibre
+    EFibre = 310
+    vFibre = 0.23
+    VFibre = 0.49
+    EMatrix = 2.4
+    vMatrix = 0.33
+    VMatrix = 1 - VFibre
 
     #Rule of mixture
     #Young Modulus
     E1 = EMatrix*VMatrix + EFibre*VFibre
-    # E2 = (EFibre*EMatrix)/((VFibre*EMatrix)+(VMatrix*EFibre))
+    
+    E2 = (EFibre*EMatrix)/((VFibre*EMatrix)+(VMatrix*EFibre))
 
     #Shear Modulus
     GFibre = EFibre/(2*(1+vFibre))
     GMatrix = EMatrix/(2*(1+vMatrix))
+    
     # print(EMatrix, vMatrix)
-    # G12 = (GFibre*GMatrix)/((GFibre*VMatrix) + (GMatrix*VFibre))
+    G12 = (GFibre*GMatrix)/((GFibre*VMatrix) + (GMatrix*VFibre))
     # print(GMatrix, GFibre, VMatrix, VFibre)
 
     #Major Poisson Ratio
     v12 = vFibre*VFibre + vMatrix*VMatrix
-
+    # print(EFibre, vFibre, VFibre, EMatrix, vMatrix, VMatrix, GFibre, GMatrix, E1, E2, v12, G12) 
     #HT Method
     nE = ((EFibre/EMatrix)-1)/((EFibre/EMatrix) + S3)
     E2 = EMatrix * ((1+(S3*nE*VFibre))/(1-(nE*VFibre)))
-
+    
     nG = ((GFibre/GMatrix) - 1)/((GFibre/GMatrix) + 1)
     G12 = GMatrix * ((1 + S12*nG*VFibre)/(1 - nG*VFibre))
 
     #Minor Poisson Ration
     v21 = v12 *(E2/E1)
+
     # print(E1, E2, v12, v21, G12)
-
-    # Checking values with example done in L10
-    # E1 = 39
-    # E2 = 8.6
-    # v12 = 0.28
-    # v21 = 0.06
-    # G12 = 3.8
-    
-    #Calculating SMatrix
-    # S11 = 1/E1
-    # S12 = v12/E1
-    # S22 = 1/E2
-    # S66 = 1/G12
-    # S = np.array([[S11, S12, 0],
-    #             [S12, S22, 0],
-    #             [0, 0, S66]])
-    # print(S)
-
     #Calculating Qmatrix
     Q11 = E1 / (1 - v12 * v21)
     Q22 = E2 / (1 - v12 * v21)
@@ -130,26 +121,26 @@ for i in range(nLayers):  # Use a loop to keep track of the current layer
 
     
 # Print the Qbar matrices in a human-readable format
-# for i, Qbar_matrix in enumerate(Qbar_list):
-#     print(f"Qbar for angle {laminate_config_q1[i]} degrees:")
-#     for row in Qbar_matrix:
-#         print(row)
-#     print()
+for i, Qbar_matrix in enumerate(Qbar_list):
+    print(f"Qbar for angle {laminate_config_q1[i]} degrees:")
+    for row in Qbar_matrix:
+        print(row)
+    print()
     
-# # Print the A1 matrices in a human-readable format
-# for i, A1_matrix in enumerate(A1_list):
+# Print the A1 matrices in a human-readable format
+# for i, B1_matrix in enumerate(B1_list):
 #     print(f"A1 for angle {laminate_config_q1[i]} degrees:")
-#     print(A1_matrix)
+#     print(B1_matrix)
 #     print()
 
-A = np.sum(A1_list, axis=0)* 1e9
-B = np.sum(B1_list, axis=0)* 1e9
-D = np.sum(D1_list, axis=0)* 1e9
+A = np.sum(A1_list, axis=0)* 1
+B = np.sum(B1_list, axis=0)* 1
+D = np.sum(D1_list, axis=0)* 1
 
 # print("A:")
 # print(A)
-# print("B:")
-# print(B)
+print("B:")
+print(B)
 # print("D:")
 # print(D)
 
@@ -157,25 +148,25 @@ D = np.sum(D1_list, axis=0)* 1e9
 ABBD = np.block([[A, B], [B, D]])
 
 # Set numpy print options to display numbers without scientific notation
-np.set_printoptions(suppress=True, formatter={'float': lambda x: '0' if x == 0.0 else '{:0.3f}'.format(x)})
+# np.set_printoptions(suppress=True, formatter={'float': lambda x: '0' if x == 0.0 else '{:0.3f}'.format(x)})
 
-# # Print the ABBD matrix
-# print("ABBD Matrix:")
-# print(ABBD)
+# Print the ABBD matrix
+print("ABBD Matrix:")
+print(ABBD)
 
 # Inverse ABBD Matrix
 ABBD_inv = np.linalg.inv(ABBD)
 
-# # Print the ABBD_inv matrix
-# print("ABBD_inv Matrix:")
-# print(ABBD_inv)
+# Print the ABBD_inv matrix
+print("ABBD_inv Matrix:")
+print(ABBD_inv)
 
-Nx = 10
-Ny = 10
-Nxy = 10
-Mx = 10
-My = 10
-Mxy = 10
+Nx = 1
+Ny = 1
+Nxy = 1
+Mx = 1
+My = 1
+Mxy = 1
 
 NM = ([[Nx],[Ny],[Nxy],[Mx],[My],[Mxy]])
 # print(NM)
@@ -201,15 +192,21 @@ kxy = result[5]
 # print(ky)
 # print(kxy)
 
-Sx = ((A[0,0]*ex + A[0,1]*ey + A[0,2]*yxy + B[0,0]*kx + B[0,1]*ky + B[0,2]*kxy))/(nLayers*thickness)
-Sy = ((A[1,0]*ex + A[1,1]*ey + A[1,2]*yxy + B[1,0]*kx + B[1,1]*ky + B[1,2]*kxy))/(nLayers*thickness)
-Sxy = ((A[2,0]*ex + A[2,1]*ey + A[2,2]*yxy + B[2,0]*kx + B[2,1]*ky + B[2,2]*kxy))/(nLayers*thickness)
-Sx = Nx/(nLayers*thickness)
-Sy = Ny/(nLayers*thickness)
+# Sx = ((A[0,0]*ex + A[0,1]*ey + A[0,2]*yxy + B[0,0]*kx + B[0,1]*ky + B[0,2]*kxy))/(nLayers*thickness)
+# Sy = ((A[1,0]*ex + A[1,1]*ey + A[1,2]*yxy + B[1,0]*kx + B[1,1]*ky + B[1,2]*kxy))/(nLayers*thickness)
+# Sxy = ((A[2,0]*ex + A[2,1]*ey + A[2,2]*yxy + B[2,0]*kx + B[2,1]*ky + B[2,2]*kxy))/(nLayers*thickness)
+# Sx = Nx/(nLayers*thickness)
+# Sy = Ny/(nLayers*thickness)
 Sxy = Nxy/(nLayers*thickness)
-Ex = Sx/ex
-Ey = Sy/ey
+# print(Sx)
+# Ex = Sx/ex
+# Ey = Sy/ey
 Gxy = Sxy/yxy
-print(Ex)
-print(Ey)
+# print(Ex)
+# print(Ey)
 print(Gxy)
+
+Ex = (1/(nLayers*thickness))*(A[0,0] - (((A[0,1])**2)/A[1,1]))
+print(Ex)
+Ey = (1/(nLayers*thickness))*(A[1,1] - (((A[0,1])**2)/A[0,0]))
+print(Ey)
