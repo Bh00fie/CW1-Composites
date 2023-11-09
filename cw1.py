@@ -153,7 +153,7 @@ print(f"G12 is: {G12} GN/m^2 \n")
 print('----------------- \n')
 
 # Set numpy print options to display numbers without scientific notation, NOT ROUNDING
-np.set_printoptions(suppress=True, formatter={'float': lambda x: '0' if x == 0.0 else '{:0.3f}'.format(x)})
+# np.set_printoptions(suppress=True, formatter={'float': lambda x: '0' if x == 0.0 else '{:0.3f}'.format(x)})
 
 # Print the Qbar matrices in a human-readable format
 for i, Qbar_matrix in enumerate(Qbar_list):
@@ -200,6 +200,7 @@ for direction in directions:
     NM = np.array(NM).reshape(6, 1)
 
     result = np.dot(ABBD_inv, NM) # Calculate the strain in different directions -> [ϵx, ϵy, γxy, κx, κy, κxy] vector
+    # print(result)
 
     ex, ey, yxy, kx, ky, kxy = result # Assigning each strain to its value in the result matrix
 
